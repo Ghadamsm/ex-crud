@@ -49,30 +49,28 @@ public class BankController {
 
 
 
-    @PutMapping("/deposit/{number}")
-    public ArrayList<Customers> deposit(@PathVariable int number){
-        ArrayList<Customers> deposit = new ArrayList<>();
-        for (Customers customer : customers) {
-            customer.setBalance(number + customer.getBalance());
-                deposit.add(customer);
-        }
-        return deposit ;
+    @PutMapping("/deposit/{index}/{number}")
+    public ApiResponse deposit(@PathVariable int number ,@PathVariable int index ){
+
+        int i = customers.get(index).getBalance() + number;
+
+        return new ApiResponse("Done!") ;
+
     }
 
 
-    @PutMapping("/withdraw/{number}")
-    public ApiResponse withdraw (@PathVariable int number){
-        ArrayList<Customers> withdraw = new ArrayList<>();
+    @PutMapping("/withdraw/{index}/{number}")
+    public ApiResponse withdraw ( @PathVariable int index ,@PathVariable int number){
 
-        for (Customers customer : customers){
-            if (customer.getBalance() >= number){
-            customer.setBalance(customer.getBalance() - number);
-            withdraw.add(customer);
-            }else if (customer.getBalance() < number){
-                return new ApiResponse("Invalid");
-            }
-        }
-        return new ApiResponse("Done!") ;
+
+           for (Customers customer : customers){
+                  if (customer.getBalance() >= number){
+                  customer.setBalance(customer.getBalance() - number);
+                  return new ApiResponse("Done!");
+              }
+           }
+
+        return new ApiResponse("Invalid!") ;
     }
 
 
